@@ -15,15 +15,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.reflections.Reflections;
+import org.reflections.scanners.MethodAnnotationsScanner;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 
 public class MainVerticle extends AbstractVerticle {
+    private static final String BASE_VERTICLE_PACKAGE = "com.greyseal.vertx.boot.verticle";
+    private static final String VERTICLE_PACKAGE = ConfigHelper.getVerticlePackage();
     protected static Logger logger = LoggerFactory.getLogger(MainVerticle.class);
+    static Reflections reflections;
+
+    static {
+        if (null == VERTICLE_PACKAGE) {
+            System.out.println("No verticles to configure. Only default HttpServerVerticle will be deployed.");
+        }
+        reflections = new Reflections(new ConfigurationBuilder().addUrls(ClasspathHelper.forPackage(VERTICLE_PACKAGE)).addUrls(ClasspathHelper.forPackage(BASE_VERTICLE_PACKAGE))
+                .setScanners(new SubTypesScanner(false), new MethodAnnotationsScanner())
+                .filterInputsBy(new FilterBuilder().includePackage(VERTICLE_PACKAGE, BASE_VERTICLE_PACKAGE)));
+    }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public void start(Future<Void> startFuture) throws Exception {
-        final Reflections reflections = new Reflections(ConfigHelper.getVerticlePackage());
-        final Set<Class<?>> clazzes = reflections.getTypesAnnotatedWith(Verticle.class);
+        //reflections.getTypesAnnotatedWith(Verticle.class);
+        final Set<Class<? extends BaseVerticle>> clazzes = reflections.getSubTypesOf(BaseVerticle.class);
         List<io.vertx.reactivex.core.Future> futures = new ArrayList<io.vertx.reactivex.core.Future>();
         if (null != clazzes && !clazzes.isEmpty()) {
             for (Class<?> verticle : clazzes) {
@@ -51,7 +67,7 @@ public class MainVerticle extends AbstractVerticle {
         super.init(vertx, context);
     }
 
-    private io.vertx.reactivex.core.Future<Void> deploy(final Class<?> clazz) {
+    public io.vertx.reactivex.core.Future<Void> deploy(final Class<?> clazz) {
         io.vertx.reactivex.core.Future<Void> future = io.vertx.reactivex.core.Future.future();
         final String clazzName = clazz.getCanonicalName();
         Verticle verticle = clazz.getAnnotation(Verticle.class);
@@ -67,7 +83,7 @@ public class MainVerticle extends AbstractVerticle {
         return future;
     }
 
-    private DeploymentOptions getDeploymentOptions(final String configName) {
+    public DeploymentOptions getDeploymentOptions(final String configName) {
         try {
             final String key = configName;
             final JsonObject json = ConfigHelper.getValueByEnvironment(key);

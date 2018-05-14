@@ -21,9 +21,9 @@ public class PostHandler extends BaseHandler {
     public void handle(RoutingContext event) {
         System.out.println("PostHandler called");
         final String method = ResponseUtil.getCookieValue(event, Configuration.COOKIE_METHOD);
-        final String correlationId = ResponseUtil.getHeaderValue(event, Configuration.CORRELATION_ID);
+        final String traceId = ResponseUtil.getHeaderValue(event, Configuration.TRACE_ID);
         final long totalTimeTaken = DateUtil.dateDiff(Instant.now(), Long.parseLong(ResponseUtil.getCookieValue(event, Configuration.COOKIE_DATE)));
-        LOGGER.info(String.join(" ", "TraceID [", correlationId, "] : Finished executing method ", method, "and took", totalTimeTaken + "", "MS"));
+        LOGGER.info(String.join(" ", "TraceID [", traceId, "] : Finished executing method ", method, "and took", totalTimeTaken + "", "MS"));
         event.response().end(event.getBodyAsString());
     }
 }

@@ -30,6 +30,7 @@ import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 
 public final class AnnotationProcessor {
+    private static final String BASE_HANDLER_PACKAGE = "com.greyseal.vertx.boot.handler";
     private static final String HANDLER_PACKAGE = ConfigHelper.getHandlerPackage();
     private static final String CONTEXT_PATH = ConfigHelper.getContextPath();
     protected static Logger logger = LoggerFactory.getLogger(AnnotationProcessor.class);
@@ -38,11 +39,11 @@ public final class AnnotationProcessor {
 
     static {
         if (null == HANDLER_PACKAGE) {
-            throw new RuntimeException("No handlers to configure");
+            throw new RuntimeException("No handlers to configure. Default PingHandler will be configured.");
         }
-        reflections = new Reflections(new ConfigurationBuilder().setUrls(ClasspathHelper.forPackage(HANDLER_PACKAGE))
+        reflections = new Reflections(new ConfigurationBuilder().addUrls(ClasspathHelper.forPackage(HANDLER_PACKAGE)).addUrls(ClasspathHelper.forPackage(BASE_HANDLER_PACKAGE))
                 .setScanners(new SubTypesScanner(false), new MethodAnnotationsScanner())
-                .filterInputsBy(new FilterBuilder().includePackage(HANDLER_PACKAGE)));
+                .filterInputsBy(new FilterBuilder().includePackage(HANDLER_PACKAGE, BASE_HANDLER_PACKAGE)));
     }
 
     public static void init(final Router router, final Vertx vertx) {
@@ -87,8 +88,8 @@ public final class AnnotationProcessor {
                     try {
                         // TODO: Need to see a better way of doing this
                         final long timeInMillis = DateUtil.getTimeInMS();
-                        final String correlationId = ResponseUtil.getHeaderValue(ctx, Configuration.CORRELATION_ID);
-                        logger.info(String.join(" ", "TraceID [", correlationId, "] : Started executing method", method.getDeclaringClass().getName() + "." + method.getName()));
+                        final String traceId = ResponseUtil.getHeaderValue(ctx, Configuration.TRACE_ID);
+                        logger.info(String.join(" ", "TraceID [", traceId, "] : Started executing method", method.getDeclaringClass().getName() + "." + method.getName()));
                         ResponseUtil.setCookiesForLogging(ctx, method.getDeclaringClass().getName() + "." + method.getName(), timeInMillis);
                         method.invoke(clazz.getDeclaredConstructor(Vertx.class).newInstance(vertx), ctx);
                     } catch (IllegalAccessException e) {

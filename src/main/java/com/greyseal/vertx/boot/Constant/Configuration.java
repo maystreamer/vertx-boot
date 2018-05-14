@@ -13,7 +13,7 @@ public class Configuration {
     public static final String HTTP_SERVER_OPTIONS = "http_server_options";
     public static final String IS_SSL_ENABLED = "ssl";
 
-    public static final String CORRELATION_ID = "CORRELATION-ID";
+    public static final String TRACE_ID = "Trace-Id";
 
     // For Cookies
     public static final String COOKIE_METHOD = "_currentMethod";

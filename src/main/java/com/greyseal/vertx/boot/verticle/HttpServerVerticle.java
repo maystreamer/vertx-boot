@@ -1,20 +1,19 @@
 package com.greyseal.vertx.boot.verticle;
 
 import com.greyseal.vertx.boot.Constant.Configuration;
+import com.greyseal.vertx.boot.Constant.VerticleType;
 import com.greyseal.vertx.boot.annotation.AnnotationProcessor;
+import com.greyseal.vertx.boot.annotation.Verticle;
 import com.greyseal.vertx.boot.config.VertxBootConfig;
 import com.greyseal.vertx.boot.handler.ErrorHandler;
 import com.greyseal.vertx.boot.helper.ConfigHelper;
 import io.reactivex.Single;
 import io.vertx.core.Future;
-import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.net.PemKeyCertOptions;
-import io.vertx.reactivex.core.AbstractVerticle;
-import io.vertx.reactivex.core.http.HttpClient;
 import io.vertx.reactivex.core.http.HttpServer;
 import io.vertx.reactivex.ext.web.Router;
 import io.vertx.reactivex.ext.web.handler.BodyHandler;
@@ -23,10 +22,8 @@ import io.vertx.reactivex.ext.web.handler.ResponseContentTypeHandler;
 import java.util.HashSet;
 import java.util.Set;
 
-//@Verticle(type = VerticleType.STANDARD, configuration = "httpServerVerticle")
-public class HttpServerVerticle extends AbstractVerticle {
-    public static String CONTEXT_PATH = VertxBootConfig.INSTANCE.getConfig().getString(Configuration.CONTEXT_PATH);
-    protected static Logger logger = LoggerFactory.getLogger(HttpServerVerticle.class);
+@Verticle(type = VerticleType.STANDARD, configuration = "httpServerVerticle")
+public class HttpServerVerticle extends BaseVerticle {
     private Single<HttpServer> server;
     private Router mainRouter;
 
@@ -47,12 +44,12 @@ public class HttpServerVerticle extends AbstractVerticle {
         }
     }
 
-    private Single<HttpServer> createHttpServer(final HttpServerOptions httpOptions, final Router router) {
+    public Single<HttpServer> createHttpServer(final HttpServerOptions httpOptions, final Router router) {
         return vertx.createHttpServer(httpOptions).requestHandler(router::accept).rxListen(ConfigHelper.getPort(),
                 ConfigHelper.getHost());
     }
 
-    private HttpServerOptions createOptions(boolean http2) {
+    public HttpServerOptions createOptions(boolean http2) {
         HttpServerOptions serverOptions = new HttpServerOptions(ConfigHelper.getHTTPServerOptions());
         if (http2) {
             serverOptions.setSsl(true)
@@ -63,7 +60,7 @@ public class HttpServerVerticle extends AbstractVerticle {
         return serverOptions;
     }
 
-    private Router buildRouter() {
+    public Router buildRouter() {
         this.mainRouter = Router.router(vertx).exceptionHandler((error -> {
             logger.error("Routers not injected ", error);
         }));
@@ -76,20 +73,7 @@ public class HttpServerVerticle extends AbstractVerticle {
         return this.mainRouter;
     }
 
-    public HttpClient buildHttpClient() {
-        HttpClientOptions options = new HttpClientOptions();
-        if (ConfigHelper.isSSLEnabled()) {
-            options.setSsl(true);
-            options.setTrustAll(true);
-            options.setVerifyHost(false);
-        }
-        options.setTryUseCompression(true);
-        options.setKeepAlive(true);
-        options.setMaxPoolSize(50);
-        return vertx.createHttpClient(options);
-    }
-
-    private Set<String> getAllowedHeaders() {
+    public Set<String> getAllowedHeaders() {
         Set<String> allowHeaders = new HashSet<>();
         allowHeaders.add("X-Requested-With");
         allowHeaders.add("Access-Control-Allow-Origin");
