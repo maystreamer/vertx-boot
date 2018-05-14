@@ -15,10 +15,11 @@ For runnning this, you will need
 This library helps you to fast-build vertx web applications. This is a sort of boiler plate which will take care of injecting routes and deploying verticles so that you can work on your concrete APIs straightaway. To Brief
 - **AppLauncher**        -> The starting point of the application. It is used to set the app configuration.
 - **MainVerticle**       -> Main verticle deploys all the other verticles used in the program.
-- **Handlers**           -> Handlers are basically the controllers which receives the input, process the input and returns the Json response back to the user. Helper Handlers are added and one can extend these as per the need.
+- **HttpServerVerticle** -> Verticle to process the incoming HTTP Requests.
+- **Handler**           -> Handlers are basically controllers which receives the input, process the input and returns the Json response back to the user. Helper Handlers are added and one can extend these as per the need.
 
 ## Build Vertx web applications using vertx-boot
-For consuming vertx-boot madness :- (Will upload a sample project later to showcase it's usage)
+For consuming vertx-boot madness :- (Sample project [Vertx-Social](https://github.com/greyseal/vertx-social))
 - Add **vertx-boot** as dependency to your project.
 - Create any **Handler** class which extends **com.greyseal.vertx.boot.handler.BaseHandler**. Sample PingHandler <br /><br />
 ```
@@ -98,19 +99,6 @@ public class HttpServerVerticle extends BaseVerticle {
         AnnotationProcessor.init(this.mainRouter, vertx);
         mainRouter.route(CONTEXT_PATH + "/*").last().failureHandler(ErrorHandler.create(vertx));
         return this.mainRouter;
-    }
-
-    public HttpClient buildHttpClient() {
-        HttpClientOptions options = new HttpClientOptions();
-        if (ConfigHelper.isSSLEnabled()) {
-            options.setSsl(true);
-            options.setTrustAll(true);
-            options.setVerifyHost(false);
-        }
-        options.setTryUseCompression(true);
-        options.setKeepAlive(true);
-        options.setMaxPoolSize(50);
-        return vertx.createHttpClient(options);
     }
 
     private Set<String> getAllowedHeaders() {
