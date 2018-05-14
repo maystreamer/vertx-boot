@@ -1,4 +1,4 @@
-package com.greyseal.vertx.hoot.Constant;
+package com.greyseal.vertx.boot.Constant;
 
 public enum VerticleType {
     STANDARD,

@@ -1,12 +1,10 @@
-package com.greyseal.vertx.hoot.verticle;
+package com.greyseal.vertx.boot.verticle;
 
-import com.greyseal.vertx.hoot.Constant.Configuration;
-import com.greyseal.vertx.hoot.Constant.VerticleType;
-import com.greyseal.vertx.hoot.annotation.AnnotationProcessor;
-import com.greyseal.vertx.hoot.annotation.Verticle;
-import com.greyseal.vertx.hoot.config.HootConfig;
-import com.greyseal.vertx.hoot.handler.ErrorHandler;
-import com.greyseal.vertx.hoot.helper.ConfigHelper;
+import com.greyseal.vertx.boot.Constant.Configuration;
+import com.greyseal.vertx.boot.annotation.AnnotationProcessor;
+import com.greyseal.vertx.boot.config.VertxBootConfig;
+import com.greyseal.vertx.boot.handler.ErrorHandler;
+import com.greyseal.vertx.boot.helper.ConfigHelper;
 import io.reactivex.Single;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpClientOptions;
@@ -27,7 +25,7 @@ import java.util.Set;
 
 //@Verticle(type = VerticleType.STANDARD, configuration = "httpServerVerticle")
 public class HttpServerVerticle extends AbstractVerticle {
-    public static String CONTEXT_PATH = HootConfig.INSTANCE.getConfig().getString(Configuration.CONTEXT_PATH);
+    public static String CONTEXT_PATH = VertxBootConfig.INSTANCE.getConfig().getString(Configuration.CONTEXT_PATH);
     protected static Logger logger = LoggerFactory.getLogger(HttpServerVerticle.class);
     private Single<HttpServer> server;
     private Router mainRouter;

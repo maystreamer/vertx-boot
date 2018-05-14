@@ -1,13 +1,13 @@
-package com.greyseal.vertx.hoot.helper;
+package com.greyseal.vertx.boot.helper;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import com.greyseal.vertx.hoot.Constant.Configuration;
-import com.greyseal.vertx.hoot.config.HootConfig;
+import com.greyseal.vertx.boot.Constant.Configuration;
+import com.greyseal.vertx.boot.config.VertxBootConfig;
 import io.vertx.core.json.JsonObject;
 
 public class ConfigHelper {
 
-    private static final JsonObject CONFIG = HootConfig.INSTANCE.getConfig();
+    private static final JsonObject CONFIG = VertxBootConfig.INSTANCE.getConfig();
 
     public static JsonObject getConfig() {
         return CONFIG;

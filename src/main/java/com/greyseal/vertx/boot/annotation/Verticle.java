@@ -1,7 +1,6 @@
-package com.greyseal.vertx.hoot.annotation;
+package com.greyseal.vertx.boot.annotation;
 
-import com.greyseal.vertx.hoot.Constant.VerticleType;
-import io.vertx.core.http.HttpMethod;
+import com.greyseal.vertx.boot.Constant.VerticleType;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

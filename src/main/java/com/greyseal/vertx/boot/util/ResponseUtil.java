@@ -1,6 +1,6 @@
-package com.greyseal.vertx.hoot.util;
+package com.greyseal.vertx.boot.util;
 
-import com.greyseal.vertx.hoot.Constant.Configuration;
+import com.greyseal.vertx.boot.Constant.Configuration;
 import io.vertx.reactivex.ext.web.Cookie;
 import io.vertx.reactivex.ext.web.RoutingContext;
 import java.util.ArrayList;

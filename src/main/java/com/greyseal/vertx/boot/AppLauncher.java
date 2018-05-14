@@ -1,7 +1,7 @@
-package com.greyseal.vertx.hoot;
+package com.greyseal.vertx.boot;
 
-import com.greyseal.vertx.hoot.config.HootConfig;
 
+import com.greyseal.vertx.boot.config.VertxBootConfig;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
@@ -24,7 +24,7 @@ public class AppLauncher extends VertxCommandLauncher implements VertxLifecycleH
 	public void afterConfigParsed(JsonObject config) {
 		if(null == config || config.isEmpty())
 			throw new RuntimeException("No configuration provided");
-		HootConfig.INSTANCE.setConfig(config);
+		VertxBootConfig.INSTANCE.setConfig(config);
 
 	}
 

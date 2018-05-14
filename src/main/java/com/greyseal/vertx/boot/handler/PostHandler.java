@@ -1,8 +1,8 @@
-package com.greyseal.vertx.hoot.handler;
+package com.greyseal.vertx.boot.handler;
 
-import com.greyseal.vertx.hoot.Constant.Configuration;
-import com.greyseal.vertx.hoot.util.DateUtil;
-import com.greyseal.vertx.hoot.util.ResponseUtil;
+import com.greyseal.vertx.boot.Constant.Configuration;
+import com.greyseal.vertx.boot.util.DateUtil;
+import com.greyseal.vertx.boot.util.ResponseUtil;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.ext.web.RoutingContext;
 import java.time.Instant;

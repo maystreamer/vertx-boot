@@ -1,7 +1,7 @@
-package com.greyseal.vertx.hoot.verticle;
+package com.greyseal.vertx.boot.verticle;
 
-import com.greyseal.vertx.hoot.annotation.Verticle;
-import com.greyseal.vertx.hoot.helper.ConfigHelper;
+import com.greyseal.vertx.boot.annotation.Verticle;
+import com.greyseal.vertx.boot.helper.ConfigHelper;
 import io.vertx.core.Context;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;

@@ -1,9 +1,6 @@
-package com.greyseal.vertx.hoot.handler;
+package com.greyseal.vertx.boot.handler;
 
-import com.greyseal.vertx.hoot.Constant.MediaType;
-import com.greyseal.vertx.hoot.annotation.Protected;
-import com.greyseal.vertx.hoot.annotation.RequestMapping;
-import io.vertx.core.http.HttpMethod;
+import com.greyseal.vertx.boot.annotation.Protected;
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.core.buffer.Buffer;

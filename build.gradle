@@ -23,9 +23,9 @@ repositories {
     maven { url "https://plugins.gradle.org/m2/" }
 }
 
-mainClassName = 'com.greyseal.vertx.hoot.AppLauncher'
+mainClassName = 'com.greyseal.vertx.boot.AppLauncher'
 
-group 'com.greyseal.vertx.hoot'
+group 'com.greyseal.vertx.boot'
 version '1.0-SNAPSHOT'
 
 sourceSets {

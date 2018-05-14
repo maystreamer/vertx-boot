@@ -1,4 +1,4 @@
-package com.greyseal.vertx.hoot.handler;
+package com.greyseal.vertx.boot.handler;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;

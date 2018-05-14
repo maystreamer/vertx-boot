@@ -1,4 +1,4 @@
-package com.greyseal.vertx.hoot.Constant;
+package com.greyseal.vertx.boot.Constant;
 
 public class Configuration {
     public static final String ENVIRONMENT = "ENV";

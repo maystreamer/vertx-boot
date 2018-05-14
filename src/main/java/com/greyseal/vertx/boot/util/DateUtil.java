@@ -1,7 +1,6 @@
-package com.greyseal.vertx.hoot.util;
+package com.greyseal.vertx.boot.util;
 
 import java.time.Instant;
-import java.util.Date;
 
 public class DateUtil {
 

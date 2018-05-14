@@ -1,8 +1,8 @@
-package com.greyseal.vertx.hoot.config;
+package com.greyseal.vertx.boot.config;
 
 import io.vertx.core.json.JsonObject;
 
-public enum HootConfig {
+public enum VertxBootConfig {
     INSTANCE;
     private JsonObject config;
 
