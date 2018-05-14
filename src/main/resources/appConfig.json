@@ -3,8 +3,8 @@
 	"http_server_host": "localhost",
 	"http_server_port": 8080,
 	"context_path": "/runner/api",
-	"verticle_package_name": "com.greyseal.vertx.hoot.verticle",
-	"handler_package_name": "com.greyseal.vertx.hoot.handler",
+	"verticle_package_name": "com.greyseal.vertx.boot.verticle",
+	"handler_package_name": "com.greyseal.vertx.boot.handler",
 	"http2Enabled": false,
 	"dev": {
 		"messagingVerticle": {
