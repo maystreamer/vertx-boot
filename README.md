@@ -45,7 +45,7 @@ public class PingHandler extends BaseHandler {
     }
 }
 ```
-- Add a Verticle to your project. Sample HttpServerVerticle <br /> < br/>
+- Add a Verticle to your project. Sample HttpServerVerticle <br /> <br/>
 ```
 @Verticle(type = VerticleType.STANDARD, configuration = "httpServerVerticle")
 public class HttpServerVerticle extends BaseVerticle {
