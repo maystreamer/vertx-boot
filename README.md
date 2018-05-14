@@ -20,7 +20,7 @@ This library helps you to fast-build vertx web applications. This is a sort of b
 ## Build Vertx web applications using vertx-boot
 For consuming vertx-boot madness :- (Will upload a sample project later to showcase it's usage)
 - Add **vertx-boot** as dependency to your project.
-- Create any Handler class which extends **com.greyseal.vertx.boot.handler.BaseHandler**. Sample PingHandler <br /><br />
+- Create any **Handler** class which extends **com.greyseal.vertx.boot.handler.BaseHandler**. Sample PingHandler <br /><br />
 ```
 @RequestMapping(path = "/ping")
 public class PingHandler extends BaseHandler {
@@ -45,7 +45,7 @@ public class PingHandler extends BaseHandler {
     }
 }
 ```
-- Add a Verticle to your project. Sample HttpServerVerticle <br /> <br/>
+- Add a **Verticle** to your project. Sample HttpServerVerticle <br /> <br/>
 ```
 @Verticle(type = VerticleType.STANDARD, configuration = "httpServerVerticle")
 public class HttpServerVerticle extends BaseVerticle {
