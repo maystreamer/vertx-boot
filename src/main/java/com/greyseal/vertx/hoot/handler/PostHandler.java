@@ -1,0 +1,29 @@
+package com.greyseal.vertx.hoot.handler;
+
+import com.greyseal.vertx.hoot.Constant.Configuration;
+import com.greyseal.vertx.hoot.util.DateUtil;
+import com.greyseal.vertx.hoot.util.ResponseUtil;
+import io.vertx.reactivex.core.Vertx;
+import io.vertx.reactivex.ext.web.RoutingContext;
+import java.time.Instant;
+
+public class PostHandler extends BaseHandler {
+
+    public PostHandler(Vertx vertx) {
+        super(vertx);
+    }
+
+    public static PostHandler create(final Vertx vertx) {
+        return new PostHandler(vertx);
+    }
+
+    @Override
+    public void handle(RoutingContext event) {
+        System.out.println("PostHandler called");
+        final String method = ResponseUtil.getCookieValue(event, Configuration.COOKIE_METHOD);
+        final String correlationId = ResponseUtil.getHeaderValue(event, Configuration.CORRELATION_ID);
+        final long totalTimeTaken = DateUtil.dateDiff(Instant.now(), Long.parseLong(ResponseUtil.getCookieValue(event, Configuration.COOKIE_DATE)));
+        LOGGER.info(String.join(" ", "TraceID [", correlationId, "] : Finished executing method ", method, "and took", totalTimeTaken + "", "MS"));
+        event.response().end(event.getBodyAsString());
+    }
+}
