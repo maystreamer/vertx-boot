@@ -1,5 +1,5 @@
 # vertx-boot
-Annotation based library to fast-develop vertx web applications. This is in-line to the Spring boot with minimal functionalities for now.
+Annotation based library to fast-develop vertx web applications. This is in-line to the Spring boot with minimal functionalities for now. To try hands-on, download sample project [Vertx-Social](https://github.com/greyseal/vertx-social)
 
 ## Getting Started
 
