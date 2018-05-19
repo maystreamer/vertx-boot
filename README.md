@@ -17,6 +17,7 @@ This library helps you to fast-build vertx web applications. This is a sort of b
 - **MainVerticle**       -> Main verticle deploys all the other verticles used in the program.
 - **HttpServerVerticle** -> Verticle to process the incoming HTTP Requests.
 - **Handler**           -> Handlers are basically controllers which receives the input, process the input and returns the Json response back to the user. Helper Handlers are added and one can extend these as per the need.
+- **@Protected Annotation** -> To protect APIs, just add @Protected annotation.
 
 ## To run vertx-boot samples
 Add run/debug configurations before running the project. <br /><br />
