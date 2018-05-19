@@ -18,6 +18,68 @@ This library helps you to fast-build vertx web applications. This is a sort of b
 - **HttpServerVerticle** -> Verticle to process the incoming HTTP Requests.
 - **Handler**           -> Handlers are basically controllers which receives the input, process the input and returns the Json response back to the user. Helper Handlers are added and one can extend these as per the need.
 
+## To run vertx-boot samples
+Add run/debug configurations before running the project. <br /><br />
+**Main class**: com.greyseal.vertx.boot.AppLauncher <br />
+**VM options**: -Dlogback.configurationFile=file:../vertx-boot/src/main/resources/logback.xml <br />
+**Program arguments**: run com.greyseal.vertx.boot.verticle.MainVerticle -conf ../vertx-boot/src/main/resources/appConfig.json <br />
+**Environment variables**: ENV=dev <br /> <br />
+
+
+After setting the variables, Run/Debug the project. If app starts successfully, then try <br /> <br />
+**Type:** *GET http://localhost:8080/runner/api/ping* <br /> 
+**Headers:** *Content-Type: application/json*;  *Trace-Id: c1d887063c3e492b9951b0479fadddda* <br />
+**Response**<br />
+```
+{
+    "status": "OK"
+}
+```
+**Type:** *POST http://localhost:8080/runner/api/ping* <br />
+**Headers:** *Content-Type: application/json*;  *Trace-Id: c1d887063c3e492b9951b0479faddddb* <br />
+**Request body (sample):**
+```
+{
+	"message":"hi"
+}
+```
+**Response**<br />
+```
+{
+    "message": "POST called"
+}
+```
+**Type:** *PUT http://localhost:8080/runner/api/ping* <br />
+**Headers:** *Content-Type: application/json*;  *Trace-Id: c1d887063c3e492b9951b0479faddddr* <br />
+**Request body (sample):**
+```
+{
+	"message":"hi"
+}
+```
+**Response**<br />
+```
+{
+    "message": "PUT called"
+}
+```
+
+**Type:** *DELETE http://localhost:8080/runner/api/ping?id=1* <br />
+**Headers:** *Content-Type: application/json*;  *Trace-Id: c1d887063c3e492b9951b0479faddddr* <br />
+**Request body (sample):**
+```
+{
+	"message":"hi"
+}
+```
+**Response**<br />
+```
+{
+    "message": "DELETE called"
+}
+```
+
+
 ## Build Vertx web applications using vertx-boot
 For consuming vertx-boot madness :- (Sample project [Vertx-Social](https://github.com/greyseal/vertx-social))
 - Add **vertx-boot** as dependency to your project.
