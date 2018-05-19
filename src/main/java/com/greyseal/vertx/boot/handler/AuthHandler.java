@@ -1,5 +1,8 @@
 package com.greyseal.vertx.boot.handler;
 
+import com.greyseal.vertx.boot.exception.InvalidTokenException;
+import com.greyseal.vertx.boot.helper.SessionHelper;
+import io.vertx.core.http.HttpHeaders;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.ext.web.RoutingContext;
 
@@ -15,6 +18,15 @@ public class AuthHandler extends BaseHandler {
     @Override
     public void handle(RoutingContext event) {
         System.out.println("AuthHandler called");
-        event.next();
+        String authHeader = event.request().headers().get(HttpHeaders.AUTHORIZATION.toString());
+        SessionHelper helper = new SessionHelper();
+        helper.validate(authHeader, handler -> {
+            if (!handler.failed()) {
+                event.getDelegate().setUser(handler.result());
+                event.next();
+            } else {
+                event.fail(new InvalidTokenException());
+            }
+        });
     }
 }

@@ -75,7 +75,7 @@ public final class AnnotationProcessor {
                 if (null != method.getAnnotation(Protected.class)) {
                     route.handler(AuthHandler.create(vertx));
                 }
-                System.out.println(route.getPath());
+                System.out.println(httpMethod.name() + " " + route.getPath());
                 createHandler(clazz, vertx, method, route);
             });
         }
