@@ -22,7 +22,7 @@ import io.vertx.reactivex.ext.web.handler.ResponseContentTypeHandler;
 import java.util.HashSet;
 import java.util.Set;
 
-@Verticle(type = VerticleType.STANDARD, configuration = "httpServerVerticle")
+@Verticle(type = VerticleType.STANDARD, configuration = "http_server_verticle")
 public class HttpServerVerticle extends BaseVerticle {
     private Single<HttpServer> server;
     private Router mainRouter;

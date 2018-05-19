@@ -9,7 +9,7 @@ public class Configuration {
     public static final String HTTP_PROTOCOL = "http_protocol";
     public static final String HTTP_SERVER_PORT = "http_server_port";
     public static final String HTTP_SERVER_HOST = "http_server_host";
-    public static final String IS_HTTP2_ENABLED = "http2Enabled";
+    public static final String IS_HTTP2_ENABLED = "is_http2_enabled";
     public static final String HTTP_SERVER_OPTIONS = "http_server_options";
     public static final String IS_SSL_ENABLED = "ssl";
 
