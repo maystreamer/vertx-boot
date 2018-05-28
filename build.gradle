@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        vertxVersion = "3.5.1"
+        vertxVersion = "3.5.2.CR2"
         logbackVersion = "1.2.3"
         slf4jVersion = "1.5.25"
         reflectionVersion = "0.9.11"
@@ -43,7 +43,8 @@ dependencies {
             "org.slf4j:slf4j-api:${slf4jVersion}",
             "org.apache.commons:commons-lang3:${commonsLang3Version}",
             "org.reflections:reflections:${reflectionVersion}",
-            "io.vertx:vertx-service-proxy:${vertxVersion}:processor"
+            "io.vertx:vertx-service-proxy:${vertxVersion}:processor",
+            "io.vertx:vertx-web-client:${vertxVersion}"
 
     compileOnly "io.vertx:vertx-codegen:${vertxVersion}"
     testCompile "io.vertx:vertx-unit:${vertxVersion}"

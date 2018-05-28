@@ -58,27 +58,28 @@ public final class AnnotationProcessor {
     private static void buildHandler(final Router router, final Class<? extends BaseHandler> clazz, final Vertx vertx) {
         RequestMapping mapping = clazz.getAnnotation(RequestMapping.class);
         // TODO: re-factor for the params
-        if (null != mapping) {
-            String[] baseConsumes = mapping.consumes();
-            String[] baseProduces = mapping.produces();
-            String basePath = mapping.path();
-            Set<Method> methods = getMethodsAnnotatedWith(clazz, RequestMapping.class);
-            methods.forEach(method -> {
-                RequestMapping annotation = method.getAnnotation(RequestMapping.class);
-                String[] methodConsumes = annotation.consumes();
-                String[] methodProduces = annotation.produces();
-                String methodPath = annotation.path();
-                HttpMethod httpMethod = annotation.method();
-                Route route = router.route(httpMethod, String.join("", CONTEXT_PATH, basePath, methodPath));
-                setMediaType(route, methodConsumes == null ? baseConsumes : methodConsumes, false);
-                setMediaType(route, methodProduces == null ? baseProduces : methodProduces, true);
-                if (null != method.getAnnotation(Protected.class)) {
-                    route.handler(AuthHandler.create(vertx));
-                }
-                System.out.println(httpMethod.name() + " " + route.getPath());
-                createHandler(clazz, vertx, method, route);
-            });
-        }
+        //if (null != mapping) {
+        final String[] baseConsumes = mapping != null ? mapping.consumes() : null;
+        final String[] baseProduces = mapping != null ? mapping.produces() : null;
+        final String basePath = mapping != null ? mapping.path() : null;
+        final Set<Method> methods = getMethodsAnnotatedWith(clazz, RequestMapping.class);
+        methods.forEach(method -> {
+            RequestMapping annotation = method.getAnnotation(RequestMapping.class);
+            String[] methodConsumes = annotation.consumes();
+            String[] methodProduces = annotation.produces();
+            String methodPath = annotation.path();
+            HttpMethod httpMethod = annotation.method();
+            final String path = basePath != null ? String.join("", CONTEXT_PATH, basePath, methodPath) : String.join("", CONTEXT_PATH, methodPath);
+            Route route = router.route(httpMethod, path);
+            setMediaType(route, methodConsumes == null ? baseConsumes : methodConsumes, false);
+            setMediaType(route, methodProduces == null ? baseProduces : methodProduces, true);
+            if (null != method.getAnnotation(Protected.class)) {
+                route.handler(AuthHandler.create(vertx));
+            }
+            System.out.println(httpMethod.name() + " " + route.getPath());
+            createHandler(clazz, vertx, method, route);
+        });
+        //}
     }
 
     private static void createHandler(final Class<? extends BaseHandler> clazz, final Vertx vertx, final Method method,

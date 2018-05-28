@@ -7,6 +7,8 @@ import com.greyseal.vertx.boot.annotation.Verticle;
 import com.greyseal.vertx.boot.config.VertxBootConfig;
 import com.greyseal.vertx.boot.handler.ErrorHandler;
 import com.greyseal.vertx.boot.helper.ConfigHelper;
+import com.greyseal.vertx.boot.httpclient.VertxHttpClient;
+import com.greyseal.vertx.boot.httpclient.VertxWebClient;
 import io.reactivex.Single;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpHeaders;
@@ -34,6 +36,8 @@ public class HttpServerVerticle extends BaseVerticle {
             this.server = createHttpServer(createOptions(ConfigHelper.isHTTP2Enabled()), buildRouter());
             server.subscribe((result -> {
                 startFuture.complete();
+                //VertxHttpClient.create(vertx);
+                VertxWebClient.create(vertx);
                 logger.info("HTTP server running on port {}", result.actualPort());
             }), ex -> {
                 startFuture.fail(ex);
