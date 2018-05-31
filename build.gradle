@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        vertxVersion = "3.5.2.CR2"
+        vertxVersion = "3.5.2.CR3"
         logbackVersion = "1.2.3"
         slf4jVersion = "1.5.25"
         reflectionVersion = "0.9.11"
