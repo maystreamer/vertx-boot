@@ -7,7 +7,7 @@
   "handler_package_name": "com.greyseal.vertx.boot.handler",
   "http2Enabled": false,
   "dev": {
-    "httpServerVerticle": {
+    "http_server_verticle": {
       "ha": false,
       "instances": 1,
       "maxWorkerExecuteTime": 60000000000,
