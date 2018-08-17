@@ -1,9 +1,10 @@
 package com.greyseal.vertx.boot.helper;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
 import com.greyseal.vertx.boot.Constant.Configuration;
 import com.greyseal.vertx.boot.config.VertxBootConfig;
 import io.vertx.core.json.JsonObject;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class ConfigHelper {
 
@@ -14,8 +15,8 @@ public class ConfigHelper {
     }
 
     public static JsonObject loadConfigurationByEnvironment() {
-        String environment = System.getenv(Configuration.ENVIRONMENT);
-        if(isBlank(environment)){
+        final String environment = System.getenv(Configuration.ENVIRONMENT);
+        if (isBlank(environment)) {
             System.out.println("Missing environment variable. Example set ENV=dev");
             throw new RuntimeException("Missing environment");
         }
@@ -51,8 +52,7 @@ public class ConfigHelper {
     }
 
     public static String getServerContextPath() {
-        return new StringBuilder(getProtocol()).append(getHost()).append(":").append(getPort()).append(getContextPath())
-                .toString();
+        return new StringBuilder(getProtocol()).append(getHost()).append(":").append(getPort()).append(getContextPath()).toString();
     }
 
     public static boolean isHTTP2Enabled() {
@@ -65,5 +65,9 @@ public class ConfigHelper {
 
     public static boolean isSSLEnabled() {
         return CONFIG.getBoolean(Configuration.IS_SSL_ENABLED, false);
+    }
+
+    public static JsonObject getMongoConfig() {
+        return getValueByEnvironment(Configuration.MONGO_CONFIG);
     }
 }

@@ -11,7 +11,10 @@ import io.vertx.reactivex.core.buffer.Buffer;
 import io.vertx.reactivex.core.http.HttpClient;
 import io.vertx.reactivex.core.http.HttpClientRequest;
 import io.vertx.reactivex.core.http.HttpClientResponse;
+
 import java.util.Map;
+
+//https://sourceforge.net/p/garyproject00/wiki/BaseHttpMicroServicesVerticle/
 
 public class VertxHttpClient extends AbstractHttpClient {
 
@@ -27,11 +30,11 @@ public class VertxHttpClient extends AbstractHttpClient {
     }
 
     public static void create(final Vertx vertx) {
-        httpClient = vertx.createHttpClient(getHttpClientOptions());
+        httpClient = vertx.createHttpClient(buildHttpClientOptions());
     }
 
-    private static HttpClientOptions getHttpClientOptions() {
-        return new HttpClientOptions(CONFIGURATION.getJsonObject("http_client_options"));
+    private static HttpClientOptions buildHttpClientOptions() {
+        return new HttpClientOptions(getHttpClientOptions());
     }
 
     @Override

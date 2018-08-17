@@ -19,4 +19,6 @@ public class Configuration {
     public static final String COOKIE_METHOD = "_currentMethod";
     public static final String COOKIE_DATE = "_startDate";
 
+    public static final String MONGO_CONFIG = "mongo_config";
+
 }
