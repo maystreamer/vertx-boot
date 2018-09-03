@@ -8,10 +8,10 @@ import io.vertx.ext.auth.User;
 
 public class SessionUser implements User {
 
-    protected final Session session;
+    protected final AbstractSession session;
     protected AuthProvider authProvider;
 
-    public SessionUser(final Session session, final AuthProvider authProvider) {
+    public SessionUser(final AbstractSession session, final AuthProvider authProvider) {
         this.session = session;
         setAuthProvider(authProvider);
     }
@@ -40,7 +40,7 @@ public class SessionUser implements User {
         this.authProvider = authProvider;
     }
 
-    public Session getCurrentSession() {
+    public AbstractSession getCurrentSession() {
         return this.session;
     }
 }

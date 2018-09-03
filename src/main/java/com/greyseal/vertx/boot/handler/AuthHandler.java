@@ -18,8 +18,8 @@ public class AuthHandler extends BaseHandler {
     @Override
     public void handle(RoutingContext event) {
         System.out.println("AuthHandler called");
-        String authHeader = event.request().headers().get(HttpHeaders.AUTHORIZATION.toString());
-        SessionHelper helper = new SessionHelper();
+        final String authHeader = event.request().headers().get(HttpHeaders.AUTHORIZATION.toString());
+        final SessionHelper helper = new SessionHelper();
         helper.validate(authHeader, handler -> {
             if (!handler.failed()) {
                 event.getDelegate().setUser(handler.result());

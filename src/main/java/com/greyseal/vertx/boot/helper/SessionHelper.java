@@ -34,6 +34,5 @@ public class SessionHelper implements AuthProvider {
 
     public void validate(String authInfo, Handler<AsyncResult<User>> resultHandler) {
         resultHandler.handle(io.vertx.core.Future.succeededFuture(new SessionUser(null, null)));
-
     }
 }

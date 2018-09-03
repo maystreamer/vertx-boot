@@ -1,33 +1,31 @@
 package com.greyseal.vertx.boot.annotation;
 
 import com.greyseal.vertx.boot.Constant.Configuration;
-import com.greyseal.vertx.boot.handler.AuthHandler;
 import com.greyseal.vertx.boot.handler.BaseHandler;
 import com.greyseal.vertx.boot.handler.PostHandler;
 import com.greyseal.vertx.boot.handler.PreHandler;
 import com.greyseal.vertx.boot.helper.ConfigHelper;
 import com.greyseal.vertx.boot.util.DateUtil;
 import com.greyseal.vertx.boot.util.ResponseUtil;
+import io.vertx.core.Handler;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.ext.web.Route;
 import io.vertx.reactivex.ext.web.Router;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import io.vertx.reactivex.ext.web.RoutingContext;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 
 public final class AnnotationProcessor {
     private static final String BASE_HANDLER_PACKAGE = "com.greyseal.vertx.boot.handler";
@@ -36,6 +34,7 @@ public final class AnnotationProcessor {
     protected static Logger logger = LoggerFactory.getLogger(AnnotationProcessor.class);
     // private static final Reflections reflections = new Reflections(PACKAGE_NAME);
     static Reflections reflections;
+    static Set<Class<? extends BaseHandler>> clazzes;
 
     static {
         if (null == HANDLER_PACKAGE) {
@@ -44,10 +43,11 @@ public final class AnnotationProcessor {
         reflections = new Reflections(new ConfigurationBuilder().addUrls(ClasspathHelper.forPackage(HANDLER_PACKAGE)).addUrls(ClasspathHelper.forPackage(BASE_HANDLER_PACKAGE))
                 .setScanners(new SubTypesScanner(false), new MethodAnnotationsScanner())
                 .filterInputsBy(new FilterBuilder().includePackage(HANDLER_PACKAGE, BASE_HANDLER_PACKAGE)));
+        clazzes = reflections.getSubTypesOf(BaseHandler.class);
     }
 
     public static void init(final Router router, final Vertx vertx) {
-        final Set<Class<? extends BaseHandler>> clazzes = reflections.getSubTypesOf(BaseHandler.class);
+
         if (null != clazzes && !clazzes.isEmpty()) {
             clazzes.forEach(baseHandler -> buildHandler(router, baseHandler, vertx));
         } else {
@@ -64,22 +64,42 @@ public final class AnnotationProcessor {
         final String basePath = mapping != null ? mapping.path() : null;
         final Set<Method> methods = getMethodsAnnotatedWith(clazz, RequestMapping.class);
         methods.forEach(method -> {
-            RequestMapping annotation = method.getAnnotation(RequestMapping.class);
-            String[] methodConsumes = annotation.consumes();
-            String[] methodProduces = annotation.produces();
-            String methodPath = annotation.path();
-            HttpMethod httpMethod = annotation.method();
+            final RequestMapping annotation = method.getAnnotation(RequestMapping.class);
+            final String[] methodConsumes = annotation.consumes();
+            final String[] methodProduces = annotation.produces();
+            final String methodPath = annotation.path();
+            final HttpMethod httpMethod = annotation.method();
             final String path = basePath != null ? String.join("", CONTEXT_PATH, basePath, methodPath) : String.join("", CONTEXT_PATH, methodPath);
-            Route route = router.route(httpMethod, path);
+            final Route route = router.route(httpMethod, path);
             setMediaType(route, methodConsumes == null ? baseConsumes : methodConsumes, false);
             setMediaType(route, methodProduces == null ? baseProduces : methodProduces, true);
             if (null != method.getAnnotation(Protected.class)) {
-                route.handler(AuthHandler.create(vertx));
+                if (null != clazzes) {
+                    final Class<? extends BaseHandler> _clazz = getAuthProvider();
+                    try {
+                        if (null != _clazz) {
+                            //final Method authMethod = _clazz.getMethod("create", Vertx.class);
+                            //route.handler((Handler<RoutingContext>) authMethod.invoke(null, vertx));
+                            route.handler((Handler<RoutingContext>) _clazz.getDeclaredConstructor(Vertx.class).newInstance(vertx));
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        throw new RuntimeException("There is no Auth handler configured");
+                    }
+                }
             }
             System.out.println(httpMethod.name() + " " + route.getPath());
             createHandler(clazz, vertx, method, route);
         });
-        //}
+    }
+
+    private static Class<? extends BaseHandler> getAuthProvider() {
+        for (Class<? extends BaseHandler> clazz : clazzes) {
+            if (clazz.isAnnotationPresent(AuthProvider.class)) {
+                return clazz;
+            }
+        }
+        return null;
     }
 
     private static void createHandler(final Class<? extends BaseHandler> clazz, final Vertx vertx, final Method method,
@@ -123,7 +143,7 @@ public final class AnnotationProcessor {
 
     private static Set<Method> getMethodsAnnotatedWith(final Class<?> type,
                                                        final Class<? extends Annotation> annotation) {
-        List<String> methodNames = new ArrayList<>();
+        final List<String> methodNames = new ArrayList<>();
         final Set<Method> methods = new HashSet<Method>();
         Class<?> klass = type;
         while (klass != Object.class) {

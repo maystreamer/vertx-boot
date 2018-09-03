@@ -1,5 +1,6 @@
 package com.greyseal.vertx.boot.handler;
 
+import com.greyseal.vertx.boot.exception.RestException;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -20,6 +21,12 @@ public class ErrorHandler extends BaseHandler {
     @Override
     public void handle(RoutingContext event) {
         System.out.println("ErrorHandler called");
-        event.response().end(new JsonObject().put("error", event.failure().getMessage()).toString());
+        if (event.failure() instanceof RestException) {
+            final RestException restException = (RestException) event.failure();
+            event.response().setStatusCode(restException.getStatusCode());
+            event.response().end(new JsonObject().put("error", restException.getErrorJson()).toString());
+        } else {
+            event.response().end(new JsonObject().put("error", event.failure().getMessage()).toString());
+        }
     }
 }

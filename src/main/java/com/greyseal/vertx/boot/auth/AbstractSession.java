@@ -2,9 +2,9 @@ package com.greyseal.vertx.boot.auth;
 
 import io.vertx.core.json.JsonObject;
 
-public abstract class Session {
+public abstract class AbstractSession {
 
-    public abstract Session getSession();
+    public abstract AbstractSession getSession();
 
     public abstract String getSessionToken();
 
