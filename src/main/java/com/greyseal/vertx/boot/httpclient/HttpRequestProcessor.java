@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class HttpRequestProcessor {
-    protected static final IHttpClient<Single<HttpClientResponse>> HTTP_CLIENT = IHttpClient.getInstance(VertxWebClient::create);
+    public static final IHttpClient<Single<HttpClientResponse>> HTTP_CLIENT = IHttpClient.getInstance(VertxWebClient::create);
     public HttpMethod httpMethod;
     public String resourceURL;
     public JsonObject payload;

@@ -15,11 +15,8 @@ public class ConfigHelper {
     }
 
     public static JsonObject loadConfigurationByEnvironment() {
-        final String environment = System.getenv(Configuration.ENVIRONMENT);
-        if (isBlank(environment)) {
-            System.out.println("Missing environment variable. Example set ENV=dev");
-            throw new RuntimeException("Missing environment");
-        }
+        String environment = System.getenv(Configuration.ENVIRONMENT);
+        environment = isBlank(environment) ? "dev" : environment;
         return CONFIG.getJsonObject(environment);
     }
 
